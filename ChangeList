@@ -1,0 +1,20 @@
+========== version 1.0.1 =========
+#disNotice-web
+1. Issue #1,#4,#9
+2. upgrade UI
+
+#disNotice-core
+1. ISSUE #2,#3
+
+watch-hbase-monitor
+1. ISSUE #6,#7,#8,
+
+warden-all
+用更通用的方式定义pom的依赖关系，并调节整个工程的定义版本风格。
+
+
+========== version 1.0.2 =========
+
+#disNotice-web
+1. Issue #12 , #13
+2. upgrade UI

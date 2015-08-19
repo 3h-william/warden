@@ -1,0 +1,19 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <bean id="hbaeCDH430Properties"
+          class="newegg.ec.warden.PropertyLoader">
+        <constructor-arg name="propName" value="hbase430.properties"/>
+    </bean>
+
+
+    <bean id="hbaseCDH430RegionWatch"
+          class="newegg.ec.warden.watch.hbase.HBaseCDH430RegionWatch">
+        <constructor-arg name="propLoader" ref="hbaeCDH430Properties"/>
+    </bean>
+
+</beans>

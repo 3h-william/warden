@@ -1,0 +1,59 @@
+<head>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+</head>
+<div ng-include src="'pages/settings/settings.html'"></div>
+<div class="subPage">
+    <div class="right-panel" ng-controller="getZKSettingsCtrl">
+        <label>Zookeeper Settings : </label>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>ZK ID</th>
+                <th>ZK Name</th>
+                <th>ZK Servers</th>
+                <th>Active</th>
+                <th>Edit</th>
+            </tr>
+
+            <tbody>
+            <tr ng-repeat="zk in zkSettingLists">
+                <td>{{ zk.zkID }}</td>
+                <td>{{ zk.zkName }}</td>
+                <td><label style="max-width:300px;word-wrap:break-word;">{{ zk.zkServers }}</label></td>
+                <td>{{ zk.connect }}</td>
+
+                <td>
+                    <div ng-controller="zkDialogService">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn btn-warning" ng-click="launch('zkEdit',zk)">ZK Edit</button>
+                                <button class="btn btn-danger" ng-click="launch('zkDelete',zk)">delete</button>
+
+
+                                <div class="inline" ng-switch on="zk.connect">
+                                    <div class="inline" ng-switch-when="false">
+                                        <button class="btn btn-danger" ng-click="launch('zkActive',zk)">active</button>
+                                    </div>
+                                    <div class="inline" ng-switch-default>
+                                        <button class="btn btn-danger" ng-click="launch('zkDeactive',zk)">deactive</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div ng-controller="zkDialogService">
+            <button class="btn btn-warning" ng-model="newzk" ng-click="launch('zkAdd')">ZK ADD</button>
+        </div>
+
+    </div>
+</div>
+
+

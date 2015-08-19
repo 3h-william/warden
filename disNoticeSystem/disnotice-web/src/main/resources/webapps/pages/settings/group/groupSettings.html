@@ -1,0 +1,41 @@
+<head>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+</head>
+<div ng-include src="'pages/settings/settings.html'"></div>
+<div class="subPage">
+    <div class="right-panel" ng-controller="getGroupSettingsCtrl">
+        <label>Group Settings : </label>
+        <table class="table table-fixed table-bordered">
+            <thead>
+            <tr>
+                <th>Group ID</th>
+                <th>Group Name</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="group in groupSettingLists">
+                <td>{{ group.groupID }}</td>
+                <td>{{ group.groupName }}</td>
+                <td>
+                    <div ng-controller="groupDialogService">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn btn-warning" ng-click="launch('groupEdit',group)">Group Edit</button>
+                                <button class="btn btn-danger" ng-click="launch('groupDelete',group)">delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div ng-controller="groupDialogService">
+            <button class="btn btn-warning" ng-model="newgroup" ng-click="launch('groupAdd')">Group ADD</button>
+        </div>
+
+    </div>
+</div>

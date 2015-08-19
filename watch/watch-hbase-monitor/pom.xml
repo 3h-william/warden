@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>newegg.ec.warden</groupId>
+        <artifactId>warden-parent</artifactId>
+        <version>1.0.2</version>
+        <relativePath>../../pom.xml</relativePath>
+    </parent>
+
+    <groupId>newegg.ec.warden</groupId>
+    <artifactId>watch-hbase-monitor</artifactId>
+    <packaging>jar</packaging>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>newegg.ec.warden</groupId>
+            <artifactId>watch-core</artifactId>
+            <version>${warden.project.version}</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>newegg.ec.warden</groupId>
+            <artifactId>warden-common</artifactId>
+            <version>${warden.project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase</artifactId>
+            <version>0.94.6-cdh4.3.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>hadoop-hdfs</artifactId>
+                    <groupId>org.apache.hadoop</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+<!--        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-protocol</artifactId>
+            <version>1.0.0-cdh5.4.0</version>
+        </dependency>-->
+
+
+    </dependencies>
+
+
+
+</project>

@@ -1,0 +1,63 @@
+<head>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+</head>
+<div ng-include src="'pages/settings/settings.html'"></div>
+<div class="subPage">
+    <div class="right-panel" ng-controller="getNodeSettingsCtrl">
+        <label>Node Settings : </label>
+        <table class="table table-bordered table-nonfluid nodetable">
+            <thead>
+            <tr>
+                <th>Node ID</th>
+                <th>Node Name</th>
+                <th>Node Path</th>
+                <th>Node Type</th>
+                <th>ZK ID</th>
+                <th>Is Watch</th>
+                <th class="col-md-3">Edit</th>
+            </tr>
+
+            <tbody>
+            <tr ng-repeat="node in nodeSettingLists">
+                <td>{{ node.nodeID }}</td>
+                <td><label style="max-width:250px;word-wrap:break-word;">{{ node.nodeName }}</label></td>
+                <td><label style="max-width:250px;word-wrap:break-word;">{{ node.nodePath }}</label></td>
+                <td>{{ node.nodeType }}</td>
+                <td>{{ node.zkID }}</td>
+                <td>{{ node.watch }}</td>
+                <td>
+                    <div ng-controller="nodeDialogService">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn btn-warning" ng-click="launch('nodeEdit',node)">Node Edit</button>
+                                <button class="btn btn-danger" ng-click="launch('nodeDelete',node)">Delete</button>
+                                <div class="inline" ng-switch on="node.watch">
+                                    <div class="inline" ng-switch-when="false">
+                                        <button class="btn btn-danger" ng-click="launch('nodeWatch',node)">Watch
+                                        </button>
+                                    </div>
+                                    <div class="inline" ng-switch-default>
+                                        <button class="btn btn-danger" ng-click="launch('nodeUnWatch',node)">Un Watch
+                                        </button>
+                                        <button class="btn btn-info" ng-click="launch('getData',node)">Get Data</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div ng-controller="nodeDialogService">
+            <button class="btn btn-warning" ng-model="newnode" ng-click="launch('nodeAdd')">Node ADD</button>
+        </div>
+
+    </div>
+</div>
+
+
+

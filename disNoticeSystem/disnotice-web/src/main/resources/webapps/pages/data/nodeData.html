@@ -1,0 +1,63 @@
+<head>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+</head>
+<div ng-controller="getDataNodeActionCtrl">
+    <div>
+        <table class="table table-bordered getDataTable">
+            <thead>
+
+            <tr>
+                <th>Key</th>
+                <th>Value</th>
+                <th>New Value</th>
+                <th>default value</th>
+                <th>Description</th>
+                <th>Edit</th>
+            </tr>
+
+            <tbody>
+            <tr ng-repeat='(key, value) in datamap'>
+                <td><label style="max-width:300px;word-wrap:break-word;">{{key}}</label></td>
+                <td><label style="max-width:80px;word-wrap:break-word;">{{value.value}}</label></td>
+                <td><input style="width: 80px;text-align: left !important;" type="text" ng-model="newValue"/></td>
+                <td>
+                    <div ng-show="null!=value.defaultChooseValueList&&value.defaultChooseValueList.size!=0">
+                        <select style="width: 80px" ng-model="newValue">
+                            <option ng-repeat="defaultChooseValue in value.defaultChooseValueList"
+                                    value="{{defaultChooseValue}}">{{defaultChooseValue}}
+                            </option>
+                        </select>
+                    </div>
+                </td>
+                <td><label  style="max-width:100px;word-wrap:break-word;">{{value.description}}</label></td>
+                <td>
+                    <div style="width:150px">
+                        <button class="btn btn-warning" ng-click="launch('dataEdit',nodeID,key,newValue)">update</button>
+                        <button class="btn btn-danger" ng-click="launch('dataDelete',nodeID,key)">delete</button>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    <input type="text" ng-model="data.newKey"/>
+                </td>
+                <td></td>
+                <td>
+                    <input style="width: 80px;text-align: left !important;" type="text" ng-model="data.newValue"/>
+                </td>
+                <td></td>
+                <td></td>
+                <td>
+                    <button class="btn btn-warning" ng-click="launch('dataEdit',nodeID,data.newKey,data.newValue)">add</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+

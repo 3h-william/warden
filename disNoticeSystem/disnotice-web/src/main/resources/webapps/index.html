@@ -1,0 +1,74 @@
+<html ng-app="disNoticeApp">
+<head>
+    <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+    <META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+    <META HTTP-EQUIV="Expires" CONTENT="0">
+    <title>DisNotice_Monitor</title>
+
+    <!--jquery-->
+    <script class="include" type="text/javascript" src="js/jquery.min.js"></script>
+    <script class="include" type="text/javascript" src="js/jquery-ui.min.js"></script>
+    <link class="include" rel="stylesheet" type="text/css" href="css/jquery-ui.css"/>
+    <!--angularjs-->
+
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-sanitize.min.js"></script>
+    <script src="js/ui-bootstrap-tpls.min.js"></script>
+    <script src="js/dialogs.min.js"></script>
+
+    <link rel="stylesheet" href="css/dialogs.css">
+
+    <script class="include" type="text/javascript" src="js/angular-route.js"></script>
+    <script class="include" type="text/javascript" src="js/app.js"></script>
+    <script class="include" type="text/javascript" src="js/route.js"></script>
+    <script class="include" type="text/javascript" src="js/modal.js"></script>
+    <script class="include" type="text/javascript" src="js/dialogs.min.js"></script>
+    <script class="include" type="text/javascript" src="js/dialogs-default-translations.min.js"></script>
+    <script class="include" type="text/javascript" src="js/controllers/groupSettingsControllers.js"></script>
+    <script class="include" type="text/javascript" src="js/controllers/zkSettingsControllers.js"></script>
+    <script class="include" type="text/javascript" src="js/controllers/nodeSettingsControllers.js"></script>
+    <script class="include" type="text/javascript" src="js/controllers/homePageControllers.js"></script>
+
+    <link class="include" rel="stylesheet" type="text/css" href="css/dialogs.css"/>
+
+    <!-- bootstrap -->
+    <link class="include" rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <link class="include" rel="stylesheet" type="text/css" href="css/bootstrap-datetimepicker.min.css"/>
+    <script type="text/javascript" src="js/bootstrap/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap/bootstrap-datetimepicker.min.js"></script>
+
+    <!-- image -->
+    <link rel="icon" href="/css/images/favicon.ico">
+    <img src="/css/images/ajax-loader.gif" id="loading-indicator" style="display:none"/>
+
+    <!-- customer css -->
+    <link class="include" rel="stylesheet" type="text/css" href="css/disnotice.css"/>
+
+</head>
+<body>
+
+<div>
+    <header>
+        <!--navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">DisNotice Web Admin</a>
+            </div>
+
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+                <li><a href="#settings"><i class="fa fa-shield"></i> Settings</a></li>
+                <li><a href="#about"><i class="fa fa-shield"></i> About</a></li>
+                <li><a href="#help"><i class="fa fa-shield"></i> Help</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT AND INJECTED VIEWS -->
+    <div id="main">
+        <div ng-view></div>
+    </div>
+</div>
+
+</body>
+</html>
