@@ -4,6 +4,7 @@ import newegg.ec.disnotice.core.NodeEvent;
 import newegg.ec.disnotice.core.collections.DisNoticeMap;
 import newegg.ec.disnotice.core.conf.InstanceConfiguration;
 import newegg.ec.disnotice.core.pathsystem.DisPathManager;
+import newegg.ec.disnotice.core.pathsystem.PathConstructType;
 import newegg.ec.disnotice.core.zk.ZKManager;
 import newegg.ec.disnotice.core.zk.ZKManagerAsCurator;
 import newegg.ec.disnotice.tool.dynamicconf.DynamicConfValidator;
@@ -18,9 +19,18 @@ public class DynamicConfTest {
     public static void main(String[] args) throws Exception {
 
         // init path
-        String dataMapName = "mytest";
-        InstanceConfiguration inc = new InstanceConfiguration("instanceTest", "0.1");
-        String mapRootPath = DisPathManager.getInstanceData(inc, dataMapName);
+        // init sample 1
+        /**
+         * @param $instancePathType = conf
+         * @param $instancePathScope = app
+         * @param $instanceName = mytest
+         *
+         */
+        InstanceConfiguration inc = new InstanceConfiguration(
+                PathConstructType.InstancePathType.conf,
+                PathConstructType.InstancePathScope.app,
+                "instanceTest");
+        String mapRootPath = DisPathManager.getInstancePath(inc);
 
         // OR define path explicitly
         //String mapRootPath = "/disRoot/instanceTest/mytest";
@@ -34,7 +44,7 @@ public class DynamicConfTest {
         DynamicConfigurationFactory dynamicConfigurationFactory = DynamicConfigurationFactory.getDynamicConfigurationInstance();
         dynamicConfigurationFactory.init(zkmgr, mapRootPath);
         dynamicConfigurationFactory.registerValidatorListenerAndSync("a", new nullValueValidator());
-        dynamicConfigurationFactory.initKeyValue("a","initA");
+        dynamicConfigurationFactory.initKeyValueWithCreateIfNotExist("a", "initA"); // also can use initKeyValue
         System.out.println("get init value="+dynamicConfigurationFactory.get("a"));
 
 

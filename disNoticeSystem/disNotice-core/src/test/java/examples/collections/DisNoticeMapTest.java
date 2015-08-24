@@ -5,6 +5,7 @@ import newegg.ec.disnotice.core.collections.DisNoticeMap;
 import newegg.ec.disnotice.core.collections.DisNoticeMapChangedListener;
 import newegg.ec.disnotice.core.conf.InstanceConfiguration;
 import newegg.ec.disnotice.core.pathsystem.DisPathManager;
+import newegg.ec.disnotice.core.pathsystem.PathConstructType;
 import newegg.ec.disnotice.core.zk.ZKManager;
 import newegg.ec.disnotice.core.zk.ZKManagerAsCurator;
 
@@ -15,13 +16,21 @@ public class DisNoticeMapTest {
     public static void main(String[] args) throws Exception {
         //PropertyLoader propLoader = new PropertyLoader("zk_test.properties");
         // init sample 1
-        String dataMapName = "mytest";
-        InstanceConfiguration inc = new InstanceConfiguration("instanceTest", "0.1");
-        String mapRootPath = DisPathManager.getInstanceData(inc, dataMapName);
+
+        /**
+         * @param $instancePathType = conf
+         * @param $instancePathScope = app
+         * @param $instanceName = mytest
+         *
+         */
+        InstanceConfiguration inc = new InstanceConfiguration(
+                PathConstructType.InstancePathType.conf,
+                PathConstructType.InstancePathScope.app,
+                "mytest");
+        String mapRootPath = DisPathManager.getInstancePath(inc);
 
         // define path explicitly
         //String mapRootPath = "/disRoot/instanceTest/mytest";
-
 
         System.out.println("data path = " + mapRootPath);
         ZKManager zkmgr = new ZKManagerAsCurator("echadoop08:2181");
@@ -59,8 +68,6 @@ class DataChangedListener implements DisNoticeMapChangedListener {
 
     @Override
     public void dataChangedEvent(DisNoticeMap disNoticeMap, String ChangeKeyName, NodeEvent.Type nodeEventType) {
-
         System.out.println("changeKeyName= " + ChangeKeyName + ",eventType=" + nodeEventType + ",value=" + disNoticeMap.get(ChangeKeyName));
-
     }
 }

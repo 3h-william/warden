@@ -7,29 +7,39 @@
     <parent>
         <groupId>newegg.ec.warden</groupId>
         <artifactId>warden-parent</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.4</version>
         <relativePath>../..</relativePath>
     </parent>
 
     <groupId>newegg.ec.warden</groupId>
-    <artifactId>watch-core</artifactId>
+    <artifactId>warden-watch-core</artifactId>
 
     <dependencies>
+
+        <dependency>
+            <groupId>newegg.ec.warden</groupId>
+            <artifactId>warden-common</artifactId>
+            <version>${warden.project.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>newegg.ec.warden</groupId>
             <version>${warden.project.version}</version>
-            <artifactId>disnotice-core</artifactId>
+            <artifactId>warden-disnotice-core</artifactId>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
             <version>4.1.6.RELEASE</version>
         </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
             <version>4.1.6.RELEASE</version>
         </dependency>
+
     </dependencies>
 
 

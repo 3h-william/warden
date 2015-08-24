@@ -1,20 +1,19 @@
 ========== version 1.0.1 =========
-#disNotice-web
-1. Issue #1,#4,#9
-2. upgrade UI
-
-#disNotice-core
-1. ISSUE #2,#3
-
-watch-hbase-monitor
-1. ISSUE #6,#7,#8,
-
-warden-all
-用更通用的方式定义pom的依赖关系，并调节整个工程的定义版本风格。
-
-
+#1 (disNotice-web)增加 Node中值修改，有默认值的选择。
+#2 (DisNotice-Core) 在DisNotice-core中增加工具类，DynamicConfiguration
+#3 (disNotice-core) 在DisNotice-core中增加工具类，ZkConnections，先简单实现
+#4 (disNotice-web) group name 长度限定在18字节太小了，需要调整ui，来支持更大的长度。
+#6 (watch-HBase-Monitor) 集成一些配置，使得能够一些参数可以被动态调整，诸如timeout的设定
+#7 (watch-hbase-monitor) 判断hbase table状态的恢复时间，不能立即恢复，需要有一定时间的等待。
+#8 (watch-hbase-monitor) 是watch一张表，因此需要将zk里的node名字改为对应表的名字，而不是代表了hbase整体状态
+#9 (disnotice-web) 在home界面中的group，保存data数据或者刷新的时候，无法定位到选择的group
 ========== version 1.0.2 =========
-
-#disNotice-web
-1. Issue #12 , #13
-2. upgrade UI
+(disNotice-web)
+#12 (disNotice-web) NodeSetting Node Data table等表样式，以及index.html样式不对，需要调整
+#13 (DisNotice-web) 增加对Map Data每一条值的说明接口，未来方便识别。可以加入到json中。
+========== version 1.0.4 =========
+#15 (watch-itemserivce-monitor)增加对itemservice faq的监控
+#19 (warden) 将所有的jar的artifactId统一
+#18 (disNotice-core) 根据#17 重新设计pathManager
+#17 (warden) 对整体项目中的DisNotice在ZK中的path做统一的规划
+#16 (warden) 需要对所有的app有一个定时的监控程序和状态的记录。

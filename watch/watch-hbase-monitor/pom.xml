@@ -7,26 +7,19 @@
     <parent>
         <groupId>newegg.ec.warden</groupId>
         <artifactId>warden-parent</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.4</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <groupId>newegg.ec.warden</groupId>
-    <artifactId>watch-hbase-monitor</artifactId>
+    <artifactId>warden-watch-hbase-monitor</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>
 
         <dependency>
             <groupId>newegg.ec.warden</groupId>
-            <artifactId>watch-core</artifactId>
-            <version>${warden.project.version}</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>newegg.ec.warden</groupId>
-            <artifactId>warden-common</artifactId>
+            <artifactId>warden-watch-core</artifactId>
             <version>${warden.project.version}</version>
         </dependency>
 
@@ -41,13 +34,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
-<!--        <dependency>
-            <groupId>org.apache.hbase</groupId>
-            <artifactId>hbase-protocol</artifactId>
-            <version>1.0.0-cdh5.4.0</version>
-        </dependency>-->
-
 
     </dependencies>
 

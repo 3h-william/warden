@@ -16,7 +16,7 @@ public class IntegerValueValidator implements DynamicConfValidator {
             int x = Integer.parseInt((String) value);
             return true;
         } catch (Throwable e) {
-            log.warn("validator int false,",e);
+            log.warn("validator int false,value="+value,e);
             return false;
         }
     }

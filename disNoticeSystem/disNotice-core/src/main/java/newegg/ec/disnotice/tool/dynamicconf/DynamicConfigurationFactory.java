@@ -15,7 +15,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by wz68 on 2015/8/1.
  * <p/>
  * R/W Type for client map(conf) from zk
- * consumer should implement validator data if data is not correct, that can avoid terrible crash in your apps.
+ * 1. consumer should implement validator data if data is not correct, that can avoid terrible crash in your apps.
+ * 2. this instance mapping with one path , that means app cloud only have one map-config globally ,and this instance should be init only once
  */
 public class DynamicConfigurationFactory {
     private static Logger log = WardenLogging.getLog(DynamicConfigurationFactory.class);
@@ -47,6 +48,14 @@ public class DynamicConfigurationFactory {
     public void initKeyValue(String key, String value) {
         if (null != value) {
             this.confCacheMap.put(key, value);
+        }
+    }
+
+    public void initKeyValueWithCreateIfNotExist(String key, String value) {
+        initKeyValue(key, value);
+        if (null == dnm.get(key)) {
+            dnm.put(key, value);
+            log.info("create data key=" + key + ",value=" + value);
         }
     }
 
@@ -101,6 +110,9 @@ public class DynamicConfigurationFactory {
         DynamicConfValidator dynamicConfValidator = dynamicConfigurationFactory.getValidatorInstance(ChangeKeyName);
         if (null != dynamicConfValidator && dynamicConfValidator.validator(value, nodeEventType)) {
             dynamicConfigurationFactory.putKeyCache(ChangeKeyName, value);
+        } else {
+            //validator false
+            log.warn("ChangeKeyName validator failed,ChangeKeyName=" + ChangeKeyName, ",value=" + value);
         }
         // if validator instance is null ,skip and set value directly
         if (null == dynamicConfValidator) {

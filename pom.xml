@@ -6,17 +6,17 @@
 
 
     <properties>
-        <warden.project.version>1.0.2</warden.project.version>
+        <warden.project.version>1.0.4</warden.project.version>
     </properties>
 
 
     <groupId>newegg.ec.warden</groupId>
     <artifactId>warden-parent</artifactId>
-    <version>${warden.project.version}</version>
+    <version>1.0.4</version>
     <packaging>pom</packaging>
 
 
-    <modules>
+   <modules>
         <module>warden-common</module>
         <module>disNoticeSystem/disNotice-core</module>
         <module>watch/watch-core</module>

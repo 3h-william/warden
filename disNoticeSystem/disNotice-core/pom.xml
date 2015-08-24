@@ -7,12 +7,12 @@
     <parent>
         <groupId>newegg.ec.warden</groupId>
         <artifactId>warden-parent</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.4</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <groupId>newegg.ec.warden</groupId>
-    <artifactId>disnotice-core</artifactId>
+    <artifactId>warden-disnotice-core</artifactId>
 
     <dependencies>
         <dependency>

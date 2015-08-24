@@ -4,6 +4,7 @@ import com.newegg.ec.warden.watch.BaseWatch;
 import com.newegg.ec.warden.watch.LogTimeReporter;
 import newegg.ec.disnotice.core.conf.InstanceConfiguration;
 import newegg.ec.disnotice.core.pathsystem.DisPathManager;
+import newegg.ec.disnotice.core.pathsystem.PathConstructType;
 import newegg.ec.disnotice.tool.dynamicconf.DynamicConfigurationFactory;
 import newegg.ec.disnotice.tool.dynamicconf.validator.IntegerValueValidator;
 import newegg.ec.disnotice.tool.zk.ZKConnections;
@@ -31,14 +32,12 @@ import java.util.concurrent.*;
 public class HBaseCDH430RegionWatch extends BaseWatch implements HBaseMonitorConstants {
     private static Logger log = WardenLogging.getLog(HBaseCDH430RegionWatch.class);
     private static final Integer default_hbase_pool_size = 32;
-    private PropertyLoader propLoader;
     // cache it , init for first
     protected List<String> rowKeyList = new ArrayList<String>();
     private String tableName;
     private Configuration hbaseConf;
     private HTablePool pool;
     private HBaseWatchMonitorReporter hbaseWatchMonitorReporter;
-    private LogTimeReporter logTimeReporter;
     private DynamicConfigurationFactory dynamicConfigurationFactory;
 
 
@@ -51,13 +50,13 @@ public class HBaseCDH430RegionWatch extends BaseWatch implements HBaseMonitorCon
     }
 
     public HBaseCDH430RegionWatch(PropertyLoader propLoader) {
+        super(propLoader);
         try {
-            this.propLoader = propLoader;
             initAndStartDynamicConf();
             init();
             subThreadsStart();
         } catch (Exception e) {
-            log.error("init HBaseCDH430RegionWatch failed,shoulde exit", e);
+            log.error("init HBaseCDH430RegionWatch failed,should exit", e);
             System.exit(-1);
         }
     }
@@ -67,28 +66,31 @@ public class HBaseCDH430RegionWatch extends BaseWatch implements HBaseMonitorCon
         String zkServers = this.propLoader.getValue(DISNOTICE_ZK_CONNECT_SERVERS);
 
         // dynamic conf init
-        InstanceConfiguration inc = new InstanceConfiguration(propLoader.getValue(WATCH_INSTANCE_NAME), "0.1");
-        String nodeMapRootPath = DisPathManager.getInstanceData(inc, propLoader.getValue(SERVICE_CONF_NAME));
-        dynamicConfigurationFactory.init(ZKConnections.getZKConnectionsInstance().get(zkServers), nodeMapRootPath);
+        InstanceConfiguration inc = new InstanceConfiguration(
+                PathConstructType.InstancePathType.conf,
+                PathConstructType.InstancePathScope.app,
+                propLoader.getValue(WATCH_INSTANCE_NAME));
+        String nodeMapRootPath = DisPathManager.getInstancePath(inc);
 
+        dynamicConfigurationFactory.init(ZKConnections.getZKConnectionsInstance().get(zkServers), nodeMapRootPath);
         // watch.timeout.millisecond
         Integer defaultWatchTimeOutSetting = Integer.parseInt(this.propLoader.getValue(WATCH_TIMEOUT_MILLISECOND, "1000"));
-        dynamicConfigurationFactory.initKeyValue(WATCH_TIMEOUT_MILLISECOND, defaultWatchTimeOutSetting + "");
+        dynamicConfigurationFactory.initKeyValueWithCreateIfNotExist(WATCH_TIMEOUT_MILLISECOND, defaultWatchTimeOutSetting + "");
         dynamicConfigurationFactory.registerValidatorListenerAndSync(WATCH_TIMEOUT_MILLISECOND, new IntegerValueValidator());
 
         // watch.interval.seconds
         Integer defaultWatchInterruptSeconds = Integer.parseInt(propLoader.getValue(WATCH_INTERVAL_SECONDS, "3"));
-        dynamicConfigurationFactory.initKeyValue(WATCH_INTERVAL_SECONDS, defaultWatchInterruptSeconds + "");
+        dynamicConfigurationFactory.initKeyValueWithCreateIfNotExist(WATCH_INTERVAL_SECONDS, defaultWatchInterruptSeconds + "");
         dynamicConfigurationFactory.registerValidatorListenerAndSync(WATCH_INTERVAL_SECONDS, new IntegerValueValidator());
 
         // key.cache.update.interval.seconds
         Integer defaultKeyCacheUpdateSeconds = Integer.parseInt(propLoader.getValue(KEY_CACHE_UPDATE_INTERVAL_SECONDS, "10"));
-        dynamicConfigurationFactory.initKeyValue(KEY_CACHE_UPDATE_INTERVAL_SECONDS, defaultKeyCacheUpdateSeconds + "");
+        dynamicConfigurationFactory.initKeyValueWithCreateIfNotExist(KEY_CACHE_UPDATE_INTERVAL_SECONDS, defaultKeyCacheUpdateSeconds + "");
         dynamicConfigurationFactory.registerValidatorListenerAndSync(KEY_CACHE_UPDATE_INTERVAL_SECONDS, new IntegerValueValidator());
 
         // async.task.processor.timeout.seconds
         Integer defaultAsyncTaskProcessorTimeoutSeconds = Integer.parseInt(propLoader.getValue(ASYNC_TASK_PROCESSOR_TIMEOUT_SECONDS, "10"));
-        dynamicConfigurationFactory.initKeyValue(ASYNC_TASK_PROCESSOR_TIMEOUT_SECONDS, defaultAsyncTaskProcessorTimeoutSeconds + "");
+        dynamicConfigurationFactory.initKeyValueWithCreateIfNotExist(ASYNC_TASK_PROCESSOR_TIMEOUT_SECONDS, defaultAsyncTaskProcessorTimeoutSeconds + "");
         dynamicConfigurationFactory.registerValidatorListenerAndSync(ASYNC_TASK_PROCESSOR_TIMEOUT_SECONDS, new IntegerValueValidator());
     }
 
@@ -101,12 +103,6 @@ public class HBaseCDH430RegionWatch extends BaseWatch implements HBaseMonitorCon
         this.tableName = propLoader.getValue("watch.table.Name");
         this.pool = new HTablePool(hbaseConf, default_hbase_pool_size);
         this.hbaseWatchMonitorReporter = new HBaseWatchMonitorReporter(this.propLoader);
-        initLogTimeReporter(propLoader);
-    }
-
-    public void initLogTimeReporter(PropertyLoader propLoader) throws Exception {
-        String zkServers = this.propLoader.getValue(DISNOTICE_ZK_CONNECT_SERVERS);
-        this.logTimeReporter = new LogTimeReporter(propLoader.getValue(WATCH_INSTANCE_NAME),zkServers);
     }
 
     private void subThreadsStart() throws Exception {
@@ -122,6 +118,7 @@ public class HBaseCDH430RegionWatch extends BaseWatch implements HBaseMonitorCon
         }
     }
 
+    @Override
     public void watch() {
 
         while (true) {
@@ -186,9 +183,9 @@ public class HBaseCDH430RegionWatch extends BaseWatch implements HBaseMonitorCon
             } catch (InterruptedException e) {
                 log.error("sleep error", e);
             }
-
         }
     }
+
 
     public static List<String> getTableRegionSplits(Configuration conf, String tableName) throws IOException, UnsupportedEncodingException {
         HTable table = new HTable(conf, tableName);

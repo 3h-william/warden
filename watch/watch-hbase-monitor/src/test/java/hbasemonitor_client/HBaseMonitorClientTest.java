@@ -5,9 +5,11 @@ import newegg.ec.disnotice.core.collections.DisNoticeMap;
 import newegg.ec.disnotice.core.collections.DisNoticeMapChangedListener;
 import newegg.ec.disnotice.core.conf.InstanceConfiguration;
 import newegg.ec.disnotice.core.pathsystem.DisPathManager;
+import newegg.ec.disnotice.core.pathsystem.PathConstructType;
 import newegg.ec.disnotice.core.zk.ZKManager;
 import newegg.ec.disnotice.core.zk.ZKManagerAsCurator;
 import newegg.ec.warden.PropertyLoader;
+import newegg.ec.warden.watch.hbase.HBaseMonitorConstants;
 import newegg.ec.warden.watch.hbase.HBaseWatchMonitorReporter;
 
 import java.util.Date;
@@ -15,7 +17,7 @@ import java.util.Date;
 /**
  * Created by wz68 on 2015/7/14.
  */
-public class HBaseMonitorClientTest {
+public class HBaseMonitorClientTest implements HBaseMonitorConstants {
     static PropertyLoader propertyLoader = new PropertyLoader("hbase430.properties");
 
     public static final String watchTableName = propertyLoader.getValue("watch.table.Name");
@@ -24,8 +26,12 @@ public class HBaseMonitorClientTest {
 
 
         // init
-        InstanceConfiguration inc = new InstanceConfiguration(propertyLoader.getValue(HBaseWatchMonitorReporter.WATCH_INSTANCE_NAME), "0.1");
-        String mapRootPath = DisPathManager.getInstanceData(inc, propertyLoader.getValue(HBaseWatchMonitorReporter.WATCH_STATISTICS_MAP_NAME));
+        InstanceConfiguration inc = new InstanceConfiguration(
+                PathConstructType.InstancePathType.status,
+                PathConstructType.InstancePathScope.cluster,
+                propertyLoader.getValue(WATCH_REPORT_NAME));
+        String mapRootPath = DisPathManager.getInstancePath(inc);
+        System.out.print("init base watch monitor report zk path = " + mapRootPath);
         ZKManager zkmgr = new ZKManagerAsCurator(propertyLoader.getValue(HBaseWatchMonitorReporter.DISNOTICE_ZK_CONNECT_SERVERS));
         zkmgr.initAndStart();
         // map operations examples:
@@ -54,7 +60,7 @@ public class HBaseMonitorClientTest {
 
         @Override
         public void dataChangedEvent(DisNoticeMap disNoticeMap, String ChangeKeyName, NodeEvent.Type nodeEventType) {
-            System.out.println(new Date()+",value changed : " + disNoticeMap.get(watchTableName));
+            System.out.println(new Date() + ",value changed : " + disNoticeMap.get(watchTableName));
         }
     }
 
